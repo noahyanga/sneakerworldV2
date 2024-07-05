@@ -1,13 +1,6 @@
 <?php
 session_start();
 
-/*******w******** 
-    
-    Name: Noah Yanga
-    Date: April 22, 2024
-    Description: Final Project
-
-****************/
 
 require('connect.php');
 
@@ -89,68 +82,92 @@ echo "Logged in As: {$_SESSION['username']}";
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
     <link rel="stylesheet" href="main.css">
     <title>SneakerWorld</title>
 </head>
 <body>
-    <!-- Remember that alternative syntax is good and html inside php is bad -->
-    <h1><a href="index.php">👟 SneakerWorld 👟</a></h1>
+    <div class="container">
+        <div class="text-center">
+            <h1><a href="index.php">👟 SneakerWorld 👟</a></h1>
+            <hr>
+        </div>
 
-    <section class="posts">
-        <?php while($row = $statement->fetch()) :?>
-            <h3><a href="fullpage.php?id=<?= $row['page_id'] ?>"><?= htmlspecialchars($row['title']) ?></a></h3>
-            <h4><?= htmlspecialchars($row['creation_date']) ?></h4>
-            <h4><a href="edit.php?page_id=<?=$row['page_id'] ?>">edit</a></h4>
-            <h4><?= htmlspecialchars($row['content']) ?></h4>
-            <?php if (!empty($image)): ?>
-                <img src='uploads/<?= $image ?>' alt='Page Image'>
-            <?php endif; ?>
+        <section class="posts">
+            <?php while($row = $statement->fetch()) :?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><a href="fullpage.php?id=<?= $row['page_id'] ?>"><?= htmlspecialchars($row['title']) ?></a></h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4><?= htmlspecialchars($row['creation_date']) ?></h4>
+                        <h4><a href="edit.php?page_id=<?= $row['page_id'] ?>">edit</a></h4>
+                        <p><?= htmlspecialchars($row['content']) ?></p>
+                        <?php if (!empty($image)): ?>
+                            <img src='uploads/<?= $image ?>' alt='Page Image' class="img-responsive">
+                        <?php endif; ?>
+                    </div>
+                </div>
             <?php endwhile ?>
-    </section>
-    <hr>
+        </section>
+        <hr>
 
-    <section class="comments" enctype='multipart/form-data'>
-        <h4>Leave a Comment Below</h4>
-        <form method="post" action="fullpage.php" enctype='multipart/form-data'>
-            <textarea id="content" name="content" rows="5" cols="100"></textarea><br>
-            <input type="submit" value="Post">
-        </form>
-<?php echo "hi"?>
-        <?php while($row = $commentStatement->fetch() ) : ?>
-            <h3><?= htmlspecialchars($row['content'])?></h3>
-            <h4><?= htmlspecialchars($row['creation_date']) ?></h4>
-            <h4><a href="edit.php?page_id=<?= $row['comment_id'] ?>">edit</a></h4>
-        <?php endwhile ?>
-        
-    </section>
+        <section class="comments">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Leave a Comment Below</h4>
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="fullpage.php" enctype='multipart/form-data' class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <textarea id="content" name="content" class="form-control" rows="5" placeholder="Enter your comment here"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <?php while($row = $commentStatement->fetch()) : ?>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3><?= htmlspecialchars($row['content']) ?></h3>
+                        <h4><?= htmlspecialchars($row['creation_date']) ?></h4>
+                        <h4><a href="edit.php?page_id=<?= $row['comment_id'] ?>">edit</a></h4>
+                    </div>
+                </div>
+            <?php endwhile ?>
+        </section>
+
+        <footer class="text-center">
+            <p>&copy; 2024 SneakerWorld. No rights reserved.</p>
+        </footer>
+    </div>
+
     <script>
-            $(document).ready(function() {
-                $('#title').summernote({
-                    placeholder: 'Enter title here',
-                    tabsize: 2,
-                    height: 50
-                });
+        $(document).ready(function() {
+            $('#title').summernote({
+                placeholder: 'Enter title here',
+                tabsize: 2,
+                height: 50
             });
-        </script>
+        });
+    </script>
 
-        <script>
-            $(document).ready(function() {
-                $('#content').summernote({
-                    placeholder: 'Enter content here',
-                    tabsize: 2,
-                    height: 200
-                });
+    <script>
+        $(document).ready(function() {
+            $('#content').summernote({
+                placeholder: 'Enter content here',
+                tabsize: 2,
+                height: 200
             });
-        </script>
-     <footer>
-        <p>&copy; 2024 SneakerWorld. No rights reserved.</p>
-    </footer>
+        });
+    </script>
 </body>
 </html>

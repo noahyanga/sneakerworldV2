@@ -105,63 +105,81 @@ echo "Logged in As: {$_SESSION['username']}";
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
-        <link rel="stylesheet" href="main.css">
-        <title>Edit this Post!</title>
-    </head>
-    <body>
-        <!-- Remember that alternative syntax is good and html inside php is bad -->
-        <h1><a href="index.php">👟 SneakerWorld 👟</a></h1>
+    <link rel="stylesheet" href="main.css">
+    <title>Edit this Post!</title>
+</head>
+<body>
+    <div class="container">
+        <header class="text-center">
+            <h1><a href="index.php">👟 SneakerWorld 👟</a></h1>
+        </header>
 
-        <form method="post" action="edit.php" enctype='multipart/form-data'>
-            <input type="hidden" name="page_id" value="<?= $quote['page_id'] ?>">
-            <label for="title">Title:</label><br>
-            <input type="text" id="title" name="title" value="<?= $quote['title']?>"><br>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <form method="post" action="edit.php" enctype='multipart/form-data' class="form-horizontal">
+                    <input type="hidden" name="page_id" value="<?= $quote['page_id'] ?>">
 
-            <label for="content">Content:</label><br>
-            <div id="content" name="content" ><?= $quote['content'] ?></div><br>
+                    <div class="form-group">
+                        <label for="title" class="control-label">Title:</label>
+                        <input type="text" id="title" name="title" class="form-control" value="<?= $quote['title']?>">
+                    </div>
 
-            <label for='image'>Image Filename:</label>
-            <input type='file' name='image' id='image'>
-            <input type='submit' name='submit' value='Upload Image'>
+                    <div class="form-group">
+                        <label for="content" class="control-label">Content:</label>
+                        <div id="content" name="content" class="form-control"><?= $quote['content'] ?></div>
+                    </div>
 
-            <input type="submit" value="Update Post" name="update">
-            <input type="submit" value="Delete" name="delete">
-        </form>
+                    <div class="form-group">
+                        <label for='image' class="control-label">Image Filename:</label>
+                        <input type='file' name='image' id='image' class="form-control">
+                    </div>
 
-        <script>
-            $(document).ready(function() {
-                $('#title').summernote({
-                    placeholder: 'Enter title here',
-                    tabsize: 2,
-                    height: 50
-                });
-            });
-        </script>
+                    <div class="form-group">
+                        <input type='submit' name='submit' value='Upload Image' class="btn btn-primary">
+                        <input type="submit" value="Update Post" name="update" class="btn btn-success">
+                        <input type="submit" value="Delete" name="delete" class="btn btn-danger">
+                    </div>
+                </form>
+            </div>
+        </div>
 
-        <script>
-            $(document).ready(function() {
-                $('#content').summernote({
-                    placeholder: 'Enter content here',
-                    tabsize: 2,
-                    height: 200
-                });
-            });
-        </script>
-        <footer>
+        <footer class="text-center">
             <p>&copy; 2024 SneakerWorld. No rights reserved.</p>
         </footer>
-    </body>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#title').summernote({
+                placeholder: 'Enter title here',
+                tabsize: 2,
+                height: 50
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#content').summernote({
+                placeholder: 'Enter content here',
+                tabsize: 2,
+                height: 200
+            });
+        });
+    </script>
+</body>
 </html>

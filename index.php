@@ -1,14 +1,6 @@
 <?php
 session_start();
 
-/*******w******** 
-    
-    Name: Noah Yanga
-    Date: April 20, 2024
-    Description: Final Project
-
-****************/
-
 require('connect.php');
 
 //$resultsPerPage = 5;
@@ -79,7 +71,6 @@ if (isset($_POST['search'])) {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,63 +86,69 @@ if (isset($_POST['search'])) {
     <link rel="stylesheet" href="main.css">
     <title>SneakerWorld</title>
 </head>
-    <body>
-        <!-- Remember that alternative syntax is good and html inside php is bad -->
-        <h1><a href="index.php">👟 SneakerWorld 👟</a></h1>
-        <p class="description">Where sneakerheads gather to discuss the hottest topics!</p>
-        <nav>
-            <ul>
-                <?php if(isset($_SESSION['username'])) : ?>
-                    <?php echo "Logged in as: {$_SESSION['username']}"; ?> 
-                    <li><a href="logout.php">Logout</a></li>
-                <?php else : ?>
-                    <li><a href="login.php">Login</a></li>
-                <?php endif; ?>
-
-                <li><a href="post.php">Create New Post</a></li>
-                <li>
-                    <form method="post" action="index.php" enctype='multipart/form-data'>
-                       <input type="text" name="keyword" placeholder="Search...">
-                       <input type="submit" name="search" value="Search">
-
-                        <select name="brand" >
-                            <option value="index.php">List of Brands</option>
-                            <?php foreach ($brands as $brand) : ?>
-                                <option value="index.php?brand=<?= urlencode($brand) ?>"><?php echo $brand; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                   </form>
-                </li>
-            </ul>
+<body>
+    <div class="container">
+        <header class="text-center">
+            <h1>👟 SneakerWorld 👟</h1>
+            <p>Where sneakerheads gather to discuss the hottest topics!</p>
+        </header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.php">SneakerWorld</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <?php if(isset($_SESSION['username'])) : ?>
+                        <li><p class="navbar-text">Logged in as: <?= htmlspecialchars($_SESSION['username']) ?></p></li>
+                        <li><a href="logout.php">Logout</a></li>
+                    <?php else : ?>
+                        <li><a href="login.php">Login</a></li>
+                    <?php endif; ?>
+                    <li><a href="post.php">Create New Post</a></li>
+                    <li>
+                        <form class="navbar-form" method="post" action="index.php" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input type="text" name="keyword" class="form-control" placeholder="Search...">
+                            </div>
+                            <button type="submit" name="search" class="btn btn-default">Search</button>
+                            <select name="brand" class="form-control">
+                                <option value="">List of Brands</option>
+                                <?php foreach ($brands as $brand) : ?>
+                                    <option value="index.php?brand=<?= urlencode($brand) ?>"><?= htmlspecialchars($brand) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </nav>
-        <main>
-    <section class="center">
-        <h2>Recent posts</h2>
-        <ul>
-            <!-- Fetch each table row in turn. Each $row is a table row hash. -->
-            <?php while($row = $statement->fetch() ) : ?>
-                <h3><a href="fullpage.php?id=<?= $row['page_id'] ?>"><?= htmlspecialchars($row['title']) ?></a></h3>
-                <h4><?= htmlspecialchars($row['creation_date']) ?></h4>
-                <h4><a href="edit.php?page_id=<?= $row['page_id'] ?>">edit</a></h4>
-            <?php
-            // truncate content to 200 characters
-                $content = htmlspecialchars($row['content']);
-                if (strlen($content) > 200) :
-                    $truncatedContent = substr($content, 0, 200) . '...';
-                ?>
-                    <p><?= $truncatedContent ?> <a href="fullpage.php?id=<?= $row['page_id'] ?>">Read Full Post...</a></p>
-                <?php else : ?>
-                    <p><?= $content ?></p>
-                <?php endif; ?>
-                <hr>
-            <?php endwhile ?>
-        </ul>
-
-    </section>
-</main>
-        
-        <footer>
-            <p>&copy; 2024 SneakerWorld. No rights reserved.</p>
+        <main class="row">
+            <section class="col-md-8 col-md-offset-2 center">
+                <h2 class="text-center">Recent posts</h2>
+                <ul class="list-unstyled">
+                    <?php while($row = $statement->fetch()) : ?>
+                        <li>
+                            <h3><a href="fullpage.php?id=<?= htmlspecialchars($row['page_id']) ?>"><?= htmlspecialchars($row['title']) ?></a></h3>
+                            <h4><?= htmlspecialchars($row['creation_date']) ?></h4>
+                            <h4><a href="edit.php?page_id=<?= htmlspecialchars($row['page_id']) ?>">edit</a></h4>
+                            <?php
+                            $content = htmlspecialchars($row['content']);
+                            if (strlen($content) > 200) {
+                                $truncatedContent = substr($content, 0, 200) . '...';
+                            ?>
+                                <p><?= $truncatedContent ?> <a href="fullpage.php?id=<?= htmlspecialchars($row['page_id']) ?>">Read Full Post...</a></p>
+                            <?php } else { ?>
+                                <p><?= $content ?></p>
+                            <?php } ?>
+                            <hr>
+                        </li>
+                    <?php endwhile ?>
+                </ul>
+            </section>
+        </main>
+        <footer class="text-center">
+            <p>&copy; created by Noah Yanga</p>
         </footer>
-    </body>
+    </div>
+</body>
 </html>
