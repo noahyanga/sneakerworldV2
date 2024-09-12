@@ -1,1 +1,1 @@
-# CMS for sneak enthusiasts
+CMS for sneaker enthusiasts
